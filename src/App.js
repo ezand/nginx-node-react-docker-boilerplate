@@ -1,11 +1,32 @@
 import React from "react";
 import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
 import createBrowserHistory from "history/createBrowserHistory";
+import {createStore} from 'redux'
 import logo from "./logo.svg";
 import "./App.css";
 
-
 const customHistory = createBrowserHistory();
+
+function counter(state = 0, action) {
+    switch (action.type) {
+        case 'INCREMENT':
+            return state + 1;
+        case 'DECREMENT':
+            return state - 1;
+        default:
+            return state
+    }
+}
+
+let store = createStore(counter);
+
+store.subscribe(() =>
+    console.log("You have clicked 'Home' " + store.getState() + " time" + (store.getState() > 1 ? "s" : "") + "...")
+);
+
+const handleHomeClick = () => {
+    store.dispatch({ type: 'INCREMENT' });
+};
 
 const Status = ({code, children}) => (
     <Route render={({staticContext}) => {
@@ -69,7 +90,6 @@ const Topics = ({match}) => (
     </div>
 );
 
-
 const App = () => (
     <Router history={customHistory}>
         <div className="App">
@@ -77,7 +97,7 @@ const App = () => (
                 <img src={logo} className="AppLogo" alt="logo"/>
 
                 <ul className="Navigation">
-                    <li><Link to="/">Home</Link></li>
+                    <li><Link to="/" onClick={handleHomeClick.bind(this)}>Home</Link></li>
                     <li><Link to="/about">About</Link></li>
                     <li><Link to="/topics">Topics</Link></li>
                 </ul>
