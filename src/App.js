@@ -115,7 +115,9 @@ const App = () => (
                     <Switch>
                         <Route exact path="/" component={Home}/>
                         <Route path="/about" render={() => (
-                            <RaisedButton label="Hello World!" />
+                            <RaisedButton
+                                label="Go to topics"
+                                containerElement={<Link to="/topics"/>}/>
                         )}/>
                         <Route path="/topics" component={Topics}/>
                         <Route component={NotFound}/>
