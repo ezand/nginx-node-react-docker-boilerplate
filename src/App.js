@@ -1,9 +1,16 @@
 import React from "react";
+import injectTapEventPlugin from 'react-tap-event-plugin';
 import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
 import createBrowserHistory from "history/createBrowserHistory";
-import {createStore} from 'redux'
+import {createStore} from "redux";
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import RaisedButton from 'material-ui/RaisedButton';
 import logo from "./logo.svg";
 import "./App.css";
+
+// Needed for onTouchTap
+// http://stackoverflow.com/a/34015469/988941
+injectTapEventPlugin();
 
 const customHistory = createBrowserHistory();
 
@@ -25,7 +32,7 @@ store.subscribe(() =>
 );
 
 const handleHomeClick = () => {
-    store.dispatch({ type: 'INCREMENT' });
+    store.dispatch({type: 'INCREMENT'});
 };
 
 const Status = ({code, children}) => (
@@ -91,28 +98,32 @@ const Topics = ({match}) => (
 );
 
 const App = () => (
-    <Router history={customHistory}>
-        <div className="App">
-            <div className="AppHeader">
-                <img src={logo} className="AppLogo" alt="logo"/>
+    <MuiThemeProvider>
+        <Router history={customHistory}>
+            <div className="App">
+                <div className="AppHeader">
+                    <img src={logo} className="AppLogo" alt="logo"/>
 
-                <ul className="Navigation">
-                    <li><Link to="/" onClick={handleHomeClick.bind(this)}>Home</Link></li>
-                    <li><Link to="/about">About</Link></li>
-                    <li><Link to="/topics">Topics</Link></li>
-                </ul>
-            </div>
+                    <ul className="Navigation">
+                        <li><Link to="/" onClick={handleHomeClick.bind(this)}>Home</Link></li>
+                        <li><Link to="/about">About</Link></li>
+                        <li><Link to="/topics">Topics</Link></li>
+                    </ul>
+                </div>
 
-            <div className="Content">
-                <Switch>
-                    <Route exact path="/" component={Home}/>
-                    <Route path="/about" component={About}/>
-                    <Route path="/topics" component={Topics}/>
-                    <Route component={NotFound}/>
-                </Switch>
+                <div className="Content">
+                    <Switch>
+                        <Route exact path="/" component={Home}/>
+                        <Route path="/about" render={() => (
+                            <RaisedButton label="Hello World!" />
+                        )}/>
+                        <Route path="/topics" component={Topics}/>
+                        <Route component={NotFound}/>
+                    </Switch>
+                </div>
             </div>
-        </div>
-    </Router>
+        </Router>
+    </MuiThemeProvider>
 );
 
 export default App
