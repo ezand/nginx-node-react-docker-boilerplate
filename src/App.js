@@ -1,11 +1,27 @@
 import React from "react";
-import {BrowserRouter as Router, Link, Route} from "react-router-dom";
+import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
 import createBrowserHistory from "history/createBrowserHistory";
 import logo from "./logo.svg";
 import "./App.css";
 
 
 const customHistory = createBrowserHistory();
+
+const Status = ({code, children}) => (
+    <Route render={({staticContext}) => {
+        if (staticContext)
+            staticContext.status = code
+        return children
+    }}/>
+);
+
+const NotFound = () => (
+    <Status code={404}>
+        <div>
+            <h1>Sorry, can’t find that.</h1>
+        </div>
+    </Status>
+);
 
 const Home = () => (
     <div>
@@ -53,6 +69,7 @@ const Topics = ({match}) => (
     </div>
 );
 
+
 const App = () => (
     <Router history={customHistory}>
         <div className="App">
@@ -67,9 +84,12 @@ const App = () => (
             </div>
 
             <div className="Content">
-                <Route exact path="/" component={Home}/>
-                <Route path="/about" component={About}/>
-                <Route path="/topics" component={Topics}/>
+                <Switch>
+                    <Route exact path="/" component={Home}/>
+                    <Route path="/about" component={About}/>
+                    <Route path="/topics" component={Topics}/>
+                    <Route component={NotFound}/>
+                </Switch>
             </div>
         </div>
     </Router>
