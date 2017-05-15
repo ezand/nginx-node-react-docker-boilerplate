@@ -60,6 +60,9 @@ const Home = () => (
 const About = () => (
     <div>
         <h2>About</h2>
+        <RaisedButton
+            label="Go to topics"
+            containerElement={<Link to="/topics"/>}/>
     </div>
 );
 
@@ -114,11 +117,7 @@ const App = () => (
                 <div className="Content">
                     <Switch>
                         <Route exact path="/" component={Home}/>
-                        <Route path="/about" render={() => (
-                            <RaisedButton
-                                label="Go to topics"
-                                containerElement={<Link to="/topics"/>}/>
-                        )}/>
+                        <Route path="/about" component={About}/>
                         <Route path="/topics" component={Topics}/>
                         <Route component={NotFound}/>
                     </Switch>
